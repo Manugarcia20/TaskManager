@@ -201,6 +201,40 @@ function cargarTablaCompletadas(tareas) {
         }
       } )
 
+      const btnCompletado = document.createElement("button");
+      btnCompletado.className = "btn btn-primary";
+
+      btnCompletado.addEventListener("click", async() => {
+        await desmarcarCompletada(t.id);
+        await cargarTarea();
+      });
+
+        const iconCompletar = document.createElement("i");
+        iconCompletar.className = "bi bi-patch-check-fill";
+
+        btnCompletado.appendChild(iconCompletar);
+        tdAcciones.appendChild(btnCompletado);
+      
+      const btnEditar = document.createElement("button");
+        btnEditar.className = "ms-2 btn btn-warning";
+
+        const iconEditar = document.createElement("i");
+        iconEditar.className = "bi bi-pencil-square";
+
+        btnEditar.appendChild(iconEditar);
+        tdAcciones.appendChild(btnEditar);
+
+        btnEditar.addEventListener("click", async() => {
+            cargarFormulario(t);
+            btnModificar.hidden = false;
+            idActualizar = t.id;
+        });
+
+
+
+
+
+
       tbody.appendChild(tr);
     
     })
@@ -295,6 +329,45 @@ const respuesta = window.confirm(`Estas seguro de que queres completar la tarea 
         console.log("No se pudo actualizar la tarea");
     }    
 }
+
+async function desmarcarCompletada(id){
+  
+const respuesta = window.confirm(`Estas seguro de que queres desmarcar como completa la tarea con id ${id}?`)
+    
+     if(respuesta){
+
+     try{
+
+        const response = await fetch(`${BASE_URL}/${id}`, 
+            {
+                method: "PUT",
+                headers: {"Content-Type":"application/json"},
+                body: JSON.stringify({completed:false})
+        })
+       
+        if (!response.ok) {
+            // Muestra un error si el backend devuelve status != 2xx
+            const errorText = await response.text();
+            console.error("Error al actualizar la tarea:", errorText || response.status);
+            return;
+        }
+
+        // Evita romper si la respuesta está vacía
+        const text = await response.text();
+        const data = text ? JSON.parse(text) : null;
+
+        console.log("La tarea fue modificada de manera exitosa", data)
+        vaciarFormulario();
+
+    }catch(error){
+        console.log(error)
+    }
+    }else{
+        console.log("No se pudo actualizar la tarea");
+    }    
+}
+
+
 
 
 function vaciarFormulario(){
