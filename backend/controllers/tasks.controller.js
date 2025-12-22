@@ -15,18 +15,13 @@ try{
     const id = req.params.id;
     const task = await tasksService.getTaskByIdService(id);
 
-    if(id){
-        if (task) {
-            res.status(200).json(task);
-        }else {
-            res.status(404).json({ message: 'Task no encontrada' });
-        }
-    }else{
-        res.status(400).json(task);
+    if(!task){
+        return res.status(404).json({message: 'Task no encontrada'});
     }
+        return res.status(200).json(task);
 
 }catch(error){
-    res.status(500).send({ message: 'Error interno' });
+    return res.status(500).send({ message: 'Error interno' });
 }
 }
 
@@ -34,7 +29,7 @@ export const createTask = async (req,res) => {
     try{
         const task = req.body;
         const newTask = await tasksService.createTaskService(task);
-        res.status(200).json(newTask);
+        return res.status(201).json(newTask);
     }catch(error){
         res.status(500).send({ message: 'Error interno' });
     }
@@ -43,31 +38,33 @@ export const createTask = async (req,res) => {
 
 export const deleteTask = async (req,res) => {
     try{
-    const id = req.params.id;
+        const id = req.params.id;
     if(id){
         await tasksService.deleteTaskService(id) 
-        res.status(200).send();
+        return res.sendStatus(204);
     }else{
-        res.status(404).json({ message: 'Task no encontrada' });
+        return res.status(404).json({ message: 'Task no encontrada' });
     }
 
     }catch(error){
-         res.status(500).send({ message: 'Error interno' });
+         return res.status(500).send({ message: 'Error interno' });
     }
 }
 
 export const editTask = async (req,res) => {
+
     try{
         const id = req.params.id;
         const task = req.body;
-        if(id && task){
-            const newTask = await tasksService.updateTaskService(id,task);
-            res.status(200).json(newTask);
-        }else{
-            res.status(404).json({ message: 'Task no encontrada' });
-        }
 
+        if(!id || !task){
+            return res.status(400).json({ message: 'Faltan datos' });
+        }
+        const result = await tasksService.updateTaskService(id,task);
+            return res.status(200).json(result);
+    
     }catch(error){
-        res.status(500).send({ message: 'Error interno' });
+        console.log(error);
+        return res.status(500).json({ message: 'Error interno' });
     }
 }

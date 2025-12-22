@@ -2,71 +2,56 @@
 import{addTask, deleteTask, getTask, getTasks, updateTask} from "../models/task.model.js"
 
 
-export const getAllTasksService = async () =>{
-    return(
-        new Promise(async (res,rej) =>{
-            try{
-                const tasks = await getTasks();
-                res(tasks);
-            }catch(error){
-                rej(error);
-            }
-            })
-        )
+export const getAllTasksService = async () =>{     
+    try{
+        const tasks = await getTasks();
+        return tasks;
+    }catch(error){
+        console.log(error);
+        throw error;
+    }  
 }
 
 
 export const getTaskByIdService = async (id) => {
-    return(
-        new Promise(async (res,rej) => {
-            try{
-                const tasks = await getTask(id);
-                res(tasks);
-            }catch(error){
-                rej(error);
-            }
-        })
-    )
+    try{
+        const task = await getTask(id);
+        return task;
+    }catch(error){
+        console.log(error);
+        throw error;
+    } 
 };
 
 export const createTaskService = async (taskData) => {
-    return(
-        new Promise(async (res,rej) => {
-            try{
-                const newTask = await addTask(taskData);
-                res(newTask);
-            }catch(error){
-                rej(error);
-            }
-        })
-    )
+    try{
+        const newTask = await addTask(taskData);
+        return newTask;
+    }catch(error){
+        console.log(error);
+        throw error;
+    }
 };
 
 
 export const deleteTaskService = async (id) => {
-    return(
-        new Promise(async (res,rej) => {
-            try{
-                await deleteTask(id);
-                res();
-            }catch(error){
-                rej(error);
-            }
-        })
-    )
+    try{
+        const result = await deleteTask(id);
+        return result;
+    }catch(error){
+        console.log(error);
+        throw error;
+    }
 }
 
 export const updateTaskService = async (id,task) => {
- return(
-        new Promise(async (res,rej) => {
-            try{
-                const newTask = await updateTask(id,task);
-                res(newTask);
-            }catch(error){
-                rej(error);
-            }
-        })
-    )
+    try{
+        const newTask = await updateTask(id,task);
+        return newTask;
+    }catch(error){
+        console.log(error);
+        throw error;
+    }
 }
 
 
