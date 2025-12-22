@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-const BASE_URL = "http://localhost:3000/api/tasks";
+const BASE_URL = "https://taskmanager-abpl.onrender.com/api/tasks";
 
 cargarTarea();
 
