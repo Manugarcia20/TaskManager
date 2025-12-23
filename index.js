@@ -7,7 +7,7 @@ const PORT = 3000;
 
 const corsConfig = {
     origin: ['http://localhost:3000', 'http://127.0.0.1:5500','https://taskmanager-abpl.onrender.com'], // dominios permitidos
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],                  // métodos permitidos
+    methods: ['GET', 'POST', 'PUT', 'DELETE','OPTIONS'],                  // métodos permitidos
     allowedHeaders: ['Content-Type', 'Authorization'],          // cabeceras permitidas
     exposedHeaders: ['Content-Length'],                         // cabeceras visibles al cliente
     credentials: true,                                          // habilitar credenciales
